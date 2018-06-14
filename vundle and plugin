@@ -1,0 +1,50 @@
+直接 看gitub手册安装vundle即可，
+ 
+主要 插件ale,clang-format,ycm;这里 主要记录一下ycm的安装：
+
+因为ycm会依赖到python的开发包，先安装python
+Sudo apt-get install python2.7 python2.7-dev
+sudo apt-get install build-essential libssl-dev libevent-dev libjpeg-dev libxml2-dev libxslt-dev
+pip:
+Sudo gedit ~/.bashrc  (~/.profile也可以)
+export PATH=”$PATH:your path”一般都会在usr/local下；或者which python
+which python一看   在usr/bin下 已经在默认的环境变量下了，不用添加了
+
+~/.vimrc另写一个配置插件相关信息：
+if filereadable(expand('~/.vimrc_vundle'))
+    source ~/.vimrc_vundle
+endif
+ 
+1.先 vundle,pluginstall 一下ycm
+2.（在 `～/.vim/bundle` 目录下） 
+$ git clone --recursive [https://github.com/Valloric/YouCompleteMe.git](https://github.com/Valloric/YouCompleteMe.git)
+
+# 检查完整性（在 `～/.vim/bundle/YouCompleteMe` 目录下）
+$ git submodule update --init --recursive
+
+添加c家族的语义补全
+# apt-get install llvm-3.9 clang-3.9 libclang-3.9-dev libboost-all-dev
+
+创建一个目录放编译过程中产生的文件
+  mkdir ~/.ycm_build
+	cd ~/.ycm_build
+
+•	生成 makefile
+$ cmake -G "Unix Makefiles" -DUSE_SYSTEM_BOOST=ON -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
+注意结果里面的lib-clang-3.9（至少3.9）
+
+编译构建 ycm_core库
+•	YCM 的顶层目录或者说根目录应该是 ～/.vim/bundle/YouCompleteMe
+#  --config Release 这个构建选项进针对 Windows
+$ cmake --build . --target ycm_core --config Release
+
+ 3.5 配置
+•	复制 .ycm_extra_conf.py 文件
+$ cp ~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py ~/.vim/
+
+•	添加 vim 配置
+注意下面的 python 解释器的路径要和编译 ycm_core 的时候使用的 python 解释器是相同的版本（2 或 3）
+“ ～/.vimrc
+let g:ycm_server_python_interpreter='/usr/bin/python'
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+
