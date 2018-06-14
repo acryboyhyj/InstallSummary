@@ -1,6 +1,6 @@
 这个搞的我有点难受，以前安装也没这么不爽啊
  
-g
+注意 pre-requisites,github手册有提到，许多blog似乎根本未提及。
 遭遇 的问题，grpc 库git clone过来的grpc是含有protobuffer的，然而需要执行autogen.sh这个脚本才能生成configure,
 但是 因为墙的原因，gmock搞不起，搜索了不少blog,没有发现可用的措施
 grpc:https://github.com/grpc/grpc/blob/master/INSTALL.md
@@ -18,4 +18,31 @@ netstat查看服务是否起来
 
 mysql++
 1.一定要安装mysql的开发包
-apt-get install mysql-devel
+首先查找本地libmysqlclient的目录在哪里，在终端敲下面的命令
+locate libmysqlclient (注意，在使用locate命令时，要先sudo updatedb一下，
+因为locate是一天更新一次db，一天之内新增的东西，locate就定位不到，udatedb一下就可以了)
+没有的话sudo apt-get install libmysqlclient-dev
+ 2.下载mysql++安装包
+ wget https://tangentsoft.com/mysqlpp/home/mysql++-3.2.3.tar.gz
+ tar -zxvf mysql++-3.2.3.tar.gz
+ 结果：
+ 　 gzip： stdin： not in gzip format 
+　　tar： Child returned status 1 
+　　tar： Error is not recoverable： exiting now
+这个压缩包没有用gzip格式压缩，所以不用加z指令
+解决方法：
+使用 $ tar -xvf xxxx.tar.gz 命令（即去掉z参数）
+ 
+然而 实际的原因是，我是用wget命令直接下载的，这是问题的根源。 去Oracle官网下载过jdk的童鞋应该都知道，
+下载之前需要同意Oracle的安装协议，不然不能下载，但是用wget的方式，
+默认是不同意，虽然能下载下来，但是下载下来的文件会有问题，所以在Linux上解压一直失败。
+直接 在浏览器下载
+cd  mysql++-3.2.3 
+./configure -prefix=/usr/
+ 
+依稀 记得mysql++需要改一个宏，就会自己include<mysql/mysql.h>
+就省了 每次include了mysql++还需要include mysql
+ 
+浏览 了一下/usr/lib只发现了libgrpc++.so 以及libprotobuf.so 没有发现libmysqlpp.so
+locate libmysql++ ,发现在解压的~目录下 ，移动到usr/lib去，但感觉整个移动不好
+ 
