@@ -1,0 +1,19 @@
+以前换的是阿里源，更改 /etc/apt/sources.list
+
+结果发现gedit不能打开图形界面，原来是服务没起来
+
+Xhost +si:localuser:root OK
+
+然后找源，我记得是有对应关系的，懒得管了，多试几个 apt-get upgate成功就没管了，
+ 
+结果 apt-get 疯狂有毒才意识到，源换错了，一搜索，果然；
+
+--如果不搞清楚就随便设置的话，不仅不能起到应有的效果，还会由于一些问题导致apt不可用。
+ 
+第1步：lsb_release -a
+
+Codename: artful
+
+ 2:sudo vi sources.list
+ 
+ 上网找一找，替换对应的codename,然后apt-get update;
