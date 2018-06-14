@@ -1,0 +1,21 @@
+这个搞的我有点难受，以前安装也没这么不爽啊
+ 
+g
+遭遇 的问题，grpc 库git clone过来的grpc是含有protobuffer的，然而需要执行autogen.sh这个脚本才能生成configure,
+但是 因为墙的原因，gmock搞不起，搜索了不少blog,没有发现可用的措施
+grpc:https://github.com/grpc/grpc/blob/master/INSTALL.md
+ 
+最后单独找到protobuffer的github安装手册，https://github.com/google/protobuf/blob/master/src/README.md
+本想直接 install，刚装的虚拟机似乎上不了网，懒得搞了；
+直接通过git clone 源码编译，这里的autogen.sh不需要改动，因为是弄的全语言，执行太久；
+当初好像 只弄了c++和python.
+
+
+ 
+ 
+mysql的安装十分简单，apt-get install mysql-client mysql-server即可，
+netstat查看服务是否起来
+
+mysql++
+1.一定要安装mysql的开发包
+apt-get install mysql-devel
