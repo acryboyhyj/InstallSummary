@@ -1,0 +1,10 @@
+一般来说在源码安装的时候直接./configure -prefix=/usr/，会比较轻松，比如说mysql++我安装的时候指定了
+就 呈现/usr/include/mysql++ usr/lib/libmysqlpp.so
+
+一般 不指定的话大部分都在usr/local/lib usr/local/include下，好多平台这个也是默认的搜索路径，
+举个 例子mysql会默认下载usr/local/include下，是usr/local/include/mysql的结构，#include<mysql/mysql.h>
+
+不过 这样视乎要在编译的时候-I 指定usr/local/include/mysql 因为（usr/local/include是默认路径，但实际上mysql/include
+是在mysql/下啊），动态库一般是libmysqlclient.so这种 编译时直接-lmysqlclient即可，不过有很有可能找不到其路径需要指定
+ 
+每次 指定也很烦啊，直接把他们的路径增加都默认搜索路径也是可以的
