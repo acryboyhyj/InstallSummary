@@ -1,0 +1,40 @@
+在 安装过程中，因为export了错误的环境变量，导致虚拟机无法登录桌面，且出现no such file等内容。
+安装编译工具链，修改环境变量后重启，可能因为误操作的原因导致开机输入密码后无法进入桌面。
+
+按ctrl+atl+f1（f1-f6）在正在登录密码界面，可以进入控制台。
+1)、进入系统(在输入密码的那个界面)
+2)、按住Ctrl+Alt+F1(F1~F7分别是不同的模式，前6个为控制台模式)
+3)、根据提示输入用户名、密码
+4)、进入etc目录 (cd /etc)
+5)、编辑profile文件 (/usr/bin/sudo vi profile)
+6)、删除里面自己添加的出问题的代码 (选中按x键删除)
+7)、保存并退出 (依次键入Shift+:  wq 并回车)
+8)、重复 2) 进入窗口界面输入密码即可
+
+/etc/profile   /etc/bashrc
+~/.profile    ~/.bashrc
+配置环境变量一般在这两种文件中。etc是针对系统的,~/当然是针对用户
+profile在系统登录后执行，只在登录系统时执行一次,bashrc在每次启动bash shell（打开终端或者在终端输入sh）后执行。
+有些unbuntu是/etc/bash.bashrc，有些是/etc/bashrc）
+登录shell会执行针对系统的/etc/profile和针对用户的~/.profile。为了让环境变量在后续的所有shell都能访问到，
+可以在这里配置全局的环境变量，但是注意profile只会在登录的时候执行一次，所以一般配置完后需要重新登录才能生效
+
+举例：
+打开~/.bashrc文件最末添加命令：PATH=$PATH:/home/workdir:/usr/local/bin，多个用：隔开  
+
+(3) profile做了什么
+对于/etc/profile，首先会检查是否交互式运行（即$PS1不为空），
+如果不是则给PS1赋’#‘或'$'，'#'代表root用户，'$'代表普通用户。
+如果是交互式运行还要是否启动了bash shell，如果是则执行/etc/bash.bashrc对bash进行相关配置。
+然后会执行/etc/profile.d目录下的shell文件，有一些作为自启动程序，有些用来定义一些全局环境变量。
+
+对于~/.profile，首先检查是否启动了bash shell，如果是则执行~/.bashrc对bash进行相关配置
+。然后重新设置了PATH（所以导致不同用户的环境变量PATH不一样
+
+(4) bashrc做了什么
+当启动bash shell（打开终端）的时候会执行/etc/bash.bashrc和~/.bashrc。
+
+echo $PATH # 查看环境变量PATH
+ 
+
+ 
