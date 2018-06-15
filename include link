@@ -60,6 +60,7 @@ linux的默认的共享库的搜索路径是：/lib和 /usr/lib，这两个文�
 4、添加搜索路径，使用ldconfig命令，建议如此；
 
 如何添加搜索路径：
-添加的搜索路径默认是放在/etc/ld.so.conf.d/ 目录下的所有文件中的，所以只需要在该目录下新建一个文件比如说opencv.conf，
+添加的搜索路径默认是放在/etc/ld.so.conf.d/ 目录下的所有文件中的，所以只需要在该目录下新建一个文件比如说我要加grp
+sudo vim /etc/ld.so.conf.d/grpc.conf 
 然后在该文件中加入.so文件的路径，比如/usr/local/lib 就可以了切记，添加完后执行ldconfig使命令生效；
 
