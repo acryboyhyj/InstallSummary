@@ -44,5 +44,9 @@ cd  mysql++-3.2.3
 就省了 每次include了mysql++还需要include mysql
  
 浏览 了一下/usr/lib只发现了libgrpc++.so 以及libprotobuf.so 没有发现libmysqlpp.so
-locate libmysql++ ,发现在解压的~目录下 ，移动到usr/lib去，但感觉整个移动不好
- 
+locate libmysql++ ,发现在解压的~目录下 ，也就是说没有正确安装，原因应该是没有在./configure之前make clean(今天安装的东西挺多)
+所以 -prefix=/usr/ 没有生效，所以要记得make clean ,并且在./configure 之前 执行一下./configure --help看一看
+重装了一遍可以发现 usr/include/下多了一个文件夹 mysql++，并且usr/lib 多了相关的libmysqlpp.so
+至此安装完成
+如果 是-prefix = /usr/local（默认也是这个）
+ 安
