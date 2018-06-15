@@ -4,7 +4,62 @@
 一般 不指定的话大部分都在usr/local/lib usr/local/include下，好多平台这个也是默认的搜索路径，
 举个 例子mysql会默认下载usr/local/include下，是usr/local/include/mysql的结构，#include<mysql/mysql.h>
 
-不过 这样视乎要在编译的时候-I 指定usr/local/include/mysql 因为（usr/local/include是默认路径，但实际上mysql/include
-是在mysql/下啊），动态库一般是libmysqlclient.so这种 编译时直接-lmysqlclient即可，不过有很有可能找不到其路径需要指定
+不过 这样视乎要在编译的时候-I 指定usr/local/include/mysql 因为（usr/local/include是默认路径，
+但实际上mysql/include是在mysql/下啊），动态库一般是libmysqlclient.so这种 编译时直接-lmysqlclient即可，
+不过有很有可能找不到其路径需要指定
  
-每次 指定也很烦啊，直接把他们的路径增加都默认搜索路径也是可以的
+每次 指定也很烦啊，直接把他们的路径增加都默认搜索路径也是可以的，
+比如 我要增加一个动态库路径
+1，找到路径
+2、打开~/.bashrc文件，在该文件最后一趟添加：
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:[动态库所在的绝对路径]
+3.source ~/.bashrc
+
+LD_LIBRARY_PATH的作用：这个环境变量用于在程序加载运行期间查找动态链接库时指定除了系统默认路径之外的其他路径，注意，
+LD_LIBRARY_PATH中指定的路径会在系统默认路径之前进行查找
+修改LD_LIBRARY_PATH等环境变量这种方法主要处理临时的动态库加载，LD_LIBRARY_PATH环境变量修改后，只能是对当前的用户生效。
+
+(动态库搜索路径) 程序加载运行期间查找动态链接库时指定除了系统默认路径之外的其他路径
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/protobuf/lib/
+(静态库搜索路径) 程序编译期间查找动态链接库时指定查找共享库的路径
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/protobuf/lib/
+执行程序搜索路径
+export PATH=$PATH:/usr/local/protobuf/bin/
+c程序头文件搜索路径
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/protobuf/include/
+c++程序头文件搜索路径
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/protobuf/include/
+pkg-config 路径
+export PKG_CONFIG_PATH=/usr/local/protobuf/lib/pkgconfig/
+
+
+方法二：修改/etc/ld.so.conf配置文件
+
+特点：对所有用户生效。不是每个操作系统都有这个配置文件，就Ubuntu系统有。
+
+/etc/ld.so.conf的作用：记录了程序加载运行期间查找动态链接库时的路径。
+ 
+
+打开/etc/ld.so.conf文件，在 该文件最后一行增加动态库的绝对路径
+重新加载/etc/ld.so.conf文件：sudo ldconfig -v
+
+/etc/ld.so.conf详解 
+　　/etc/ld.so.conf 此文件记录了编译时使用的动态库的路径，也就是加载so库的路径
+    默认情况下，编译器只会使用/lib和/usr/lib这两个目录下的库文件,而通常通过源码包进行安装时，
+    如果不指定--prefix会将库安装在/usr/local目录下，而又没有在文件/etc/ld.so.conf中添加/usr/local/lib这个目录>。
+    这样虽然安装了源码包，但是使用时仍然找不到相关的.so库，就会报错。也就是说系统不知道安装了源码包。
+    对于此种情况有2种解决办法：
+（1）在用源码安装时，用--prefix指定安装路径为/usr/lib。这样的话也就不用配置PKG_CONFIG_PATH
+  (2) 直接将路径/usr/local/lib路径加入到文件/etc/ld.so.conf文件的中。在文件/etc/ld.so.conf中末尾直接添加：/usr/local/lib
+
+linux的默认的共享库的搜索路径是：/lib和 /usr/lib，这两个文件夹，不包含子路径；
+如果共享库不在这两个路径中的话，不能自动链接，解决的办法有几种：
+1、编译程序使用静态链接，加上完整路径，不建议了；即-I -L
+2、修改LD_LIBRARY_PATH环境变量（临时有效，且有时候没有效果）；
+3、将.so文件复制到可以搜索的路径中，这个办法有点傻；
+4、添加搜索路径，使用ldconfig命令，建议如此；
+
+如何添加搜索路径：
+添加的搜索路径默认是放在/etc/ld.so.conf.d/ 目录下的所有文件中的，所以只需要在该目录下新建一个文件比如说opencv.conf，
+然后在该文件中加入.so文件的路径，比如/usr/local/lib 就可以了切记，添加完后执行ldconfig使命令生效；
+
