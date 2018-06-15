@@ -16,6 +16,7 @@ cpplint:
 cpplint是一个静态检查工具，检查include这个贼好用，有时候总是忘记include一些包，可以通过ale显示
 不过cpplint 原本是 cpplint.py 需要去网上下一个cpplint.py然后重命名成cpplint，放在$PATH下
  
+
 方法1：
 sudo -H pip install cpplint
 结果 告诉我他在usr/local/bim/python2.7/dist-packges
@@ -24,6 +25,20 @@ cpplint.py重命名 成cpplint
 方法 2：
 直接 mv cpp 到 /usr/lib下 没有问题，就这样把
  
+ cppcheck：检查一些编译器检查不到的错误
+ (1)、自动变量检查；(2)、数组的边界检查；(3)、class类检查；(4)、过期的函数，废弃函数调用检查；(5)、异常内存使用，释放检查；
+ (6)、内存泄漏检查，主要是通过内存引用指针；(7)、操作系统资源释放检查，中断，文件描述符等；(8)、异常STL 函数使用检查；
+ (9)、代码格式错误，以及性能因素检查。
+http://sourceforge.net/projects/cppcheck/files/cppcheck/  这里下载最新
+直接make 
+sudo make instalet g:ale_cpp_cppcheck_options = '--enable=warning,style,performance,portability,information,missingInclude'
+let g:ale_cpp_cpplint_options = '--filter=-legal/copyright,-whitespace/indent'
+ll
+发现直接 在usr/bin下 
+在 ale中添加
+let g:ale_cpp_cppcheck_options = '--enable=warning,style,performance,portability,information,missingInclude'
+let g:ale_cpp_cpplint_options = '--filter=-legal/copyright,-whitespace/indent'
+
 ycm:这个安装比较难，写一下过程
 因为ycm会依赖到python的开发包，先安装python
 Sudo apt-get install python2.7 python2.7-dev
