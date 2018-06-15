@@ -4,4 +4,7 @@
 
 索性安装情况记录下来。以便下次继续裸奔
  
-包括 换源，vim插件，grpc, mysql , mysqlpp , scrapy
+包括 换源，vim插件clang-format,ycm,ale,cpplint等
+ 
+以及grpc, mysql , mysqlpp , scrapy。
+ 
