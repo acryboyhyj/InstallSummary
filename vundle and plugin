@@ -1,7 +1,30 @@
 直接 看gitub手册安装vundle即可，
+主要 插件ale,clang-format,ycm,cpplint;这里 主要记录一下ycm的安装
  
-主要 插件ale,clang-format,ycm;这里 主要记录一下ycm的安装：
+感觉只记录ycm还不行，ycm安装完就自动起效了，
+像clang-format这些需要install的是需要 让系统知道其2进制的路径的，
+vundle下的只有.vim不包含2进制，
+clang-format: 
+http://clang.llvm.org/docs/ClangFormat.html#vim-integration
+这是 clang-format正式的vim整合的文档，不过我是通过 vundle来的，就不需要了
+只需要 vundle配置好vim,并让系统能够找到其2进制就行。
 
+sudo apt-get install clang-format
+locate clang-format 发现在usr/bin下，就不用在~/.profile增加其路径了
+
+cpplint:
+cpplint是一个静态检查工具，检查include这个贼好用，有时候总是忘记include一些包，可以通过ale显示
+不过cpplint 原本是 cpplint.py 需要去网上下一个cpplint.py然后重命名成cpplint，放在$PATH下
+ 
+方法1：
+sudo -H pip install cpplint
+结果 告诉我他在usr/local/bim/python2.7/dist-packges
+cpplint.py重命名 成cpplint
+在 ~/.bashec最后一行export了这个路径，可用；
+方法 2：
+直接 mv cpp 到 /usr/lib下 没有问题，就这样把
+ 
+ycm:这个安装比较难，写一下过程
 因为ycm会依赖到python的开发包，先安装python
 Sudo apt-get install python2.7 python2.7-dev
 sudo apt-get install build-essential libssl-dev libevent-dev libjpeg-dev libxml2-dev libxslt-dev
