@@ -1,16 +1,14 @@
-syntax on "自动语法高亮
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set showmatch
 
-set nu              " 显示行号  
-"color asmanian2     " 设置背景主题  
-set guifont=Courier_New:h10:cANSI   " 设置字体  
+set nocompatible
+set backspace=indent,eol,start
+set fileencodings=utf-8
+syntax on 
 
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
-
-set foldenable      " 允许折叠  
-set foldmethod=manual   " 手动折叠  
-"set background=dark "背景使用黑色 
-set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限  
-
+ 
 " 显示中文帮助
 if version >= 603
     set helplang=cn
@@ -19,10 +17,9 @@ endif
 
 " 设置配色方案
 colorscheme elflord
-
-set noswapfile
-set nobackup
-set nowritebackup
+syntax enable
+set background=dark
+"colorscheme solarized
 
 "编码设置
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
@@ -38,17 +35,13 @@ filetype plugin on
 set clipboard+=unnamed
 " 高亮显示匹配的括号
 set showmatch
-" 自动缩进
-set autoindent
-set cindent
-" Tab键的宽度
-set tabstop=4
-" 统一缩进为4
-set softtabstop=4
-set shiftwidth=4
-" 不要用空格代替制表符
-set noexpandtab
 
+let mapleader=";"
+
+set wildmenu
+set hlsearch
+"共享剪贴板  
+set clipboard+=unnamed
 
 "vundle's setting
 

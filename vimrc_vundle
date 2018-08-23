@@ -10,15 +10,15 @@ Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'Valloric/YouCompleteMe'
-
+Plugin 'derekwyatt/vim-fswitch'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'fholgado/minibufexpl.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 "vim-clang-format
 let g:clang_format#code_style = "google"
-"format :w
-let g:clang_format#auto_format=1
-"format solution
 let g:clang_format#style_options = {
     \ "AccessModifierOffset" : -4,
     \ "Standard" : "Cpp11",
@@ -26,7 +26,6 @@ let g:clang_format#style_options = {
     \ "ColumnLimit" : 80,
     \ "Cpp11BracedListStyle" : "true",
     \ "AlignConsecutiveAssignments" : "true"}
-
 autocmd FileType c,cpp,proto nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,proto vnoremap <buffer><Leader>cf :ClangFormat<CR>
 nmap <Leader>C :ClangFormatAutoToggle<CR>
@@ -41,25 +40,23 @@ let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚡'
 "在vim自带的状态栏中整合ale
 let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
-"显示Linter名称,出错或警告等相关信息
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
-"文件内容发生变化时不进行检查
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 let g:ale_lint_on_text_changed = 'never'
-"打开文件时不进行检查
 let g:ale_lint_on_enter = 0
-nmap sp <Plug>(ale_previous_wrap)
-nmap sn <Plug>(ale_next_wrap)
-"<Leader>s触发/关闭语法检查
-nmap <Leader>s :ALEToggle<CR>
-"<Leader>d查看错误或警告的详细信息
-nmap <Leader>d :ALEDetail<CR>
-"使用clang对c和c++进行语法检查，对python使用pylint进行语法检查
+
 let g:ale_linters = {
-\   'c++': ['clang'],
-\   'c': ['clang'],
-\   'python': ['pylint'],
-\}
+    \ 'cpp' : ['g++', 'clang++', 'cppcheck', 'cpplint'],
+    \ 'json' : ['jsonlint'],
+    \ 'proto' : ['protoc-gen-lint'],
+    \ 'python' : ['pylint'],
+    \ }
+let g:ale_cpp_gcc_options = '-std=c++11 -Wall'
+let g:ale_cpp_cppcheck_options = '--enable=all'
+let g:ale_cpp_cpplint_options = '--filter=-legal/copyright,-whitespace/indent'
+
+let g:ale_fixers = {'python': ['autopep8']}
+let g:ale_fix_on_save = 1
 
 "cpplint
 autocmd FileType cpp map <buffer> <F3> :call Cpplint()<CR>
@@ -118,10 +115,20 @@ let g:bufferline_echo=0
 set laststatus=2  
 set t_Co=256  
 
+"cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_no_function_highlight = 1
+
+"vim-fswitch
+nmap <slient><Leader>sw :FSHere<cr>
 "The NERD tree
 "F3触发，设置宽度为30,显示书签
-map <F3> :NERDTreeToggle<CR>
-let NERDTreeWinSize = 30
+nmap <Leader>fl :NERDTreeToggle<CR>
+let NERDTreeWinSize = 32
+" 设置NERDTree子窗口位置
+let NERDTreeWinPos="right"
 let NERDTreeShowBookmarks = 1
 "高亮当前行
 let NERDTreeHighlightCursorline = 1
@@ -137,8 +144,18 @@ let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$',
 "let NERDTreeAutoCenter = 1
 "自动打开NERDTree
 "autocmd vimenter * NERDTree
+"NERDTree 子窗口中不显示冗余帮助信息
+let NERDTreeMinimalUI=1
+" 删除文件时自动删除文件对应 buffer
+let NERDTreeAutoDeleteBuffer=1
 
+"minibufexpl
 
+"显示/隐藏 MiniBufExplorer 窗口
+map <Leader>bl :MBEToggle<cr>
+" buffer 切换快捷键
+map <C-Tab> :MBEbn<cr>
+map <C-S-Tab> :MBEbp<cr>
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to updateorjust :PluginUpdate orjust :PluginUpdate
