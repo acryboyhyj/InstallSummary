@@ -7,8 +7,8 @@ set nocompatible
 set backspace=indent,eol,start
 set fileencodings=utf-8
 syntax on 
-
- 
+"setting immidate work
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
 " 显示中文帮助
 if version >= 603
     set helplang=cn
