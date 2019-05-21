@@ -71,7 +71,7 @@ $ git submodule update --init --recursive
 $ cmake -G "Unix Makefiles" -DUSE_SYSTEM_BOOST=ON -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
 注意结果里面的lib-clang-3.9（至少3.9）
 
-编译构建 ycm_core库
+编译构建 ycm_core库，此时还在 .ycm_build目录
 •	YCM 的顶层目录或者说根目录应该是 ～/.vim/bundle/YouCompleteMe
 #  --config Release 这个构建选项进针对 Windows
 $ cmake --build . --target ycm_core --config Release
